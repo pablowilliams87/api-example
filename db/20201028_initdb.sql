@@ -1,15 +1,15 @@
 CREATE DATABASE environment_airq_measurand;
 
 CREATE TABLE environment_airq_measurand (
-    id_environment_airq_measurand INTEGER PRIMARY KEY,
-    timestamp VARCHAR(50),
+    id_environment_airq_measurand SERIAL PRIMARY KEY,
+    timestamp TIMESTAMP,
     id_entity VARCHAR(50),
-    so2 VARCHAR(50),
-    no2 VARCHAR(50),
-    co VARCHAR(50),
-    o3 VARCHAR(50),
-    pm10  VARCHAR(50),
-    pm2_5 VARCHAR(50)
+    so2 FLOAT8,
+    no2 FLOAT8,
+    co FLOAT8,
+    o3 FLOAT8,
+    pm10 FLOAT8,
+    pm2_5 FLOAT8
 );
 
 /*
