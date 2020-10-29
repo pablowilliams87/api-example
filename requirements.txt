@@ -1,2 +1,5 @@
-Flask==0.10.1
-Flask-SQLAlchemy==0.16
+flask
+flask_restful
+flask-sqlalchemy
+sqlalchemy
+#psycopg2-binary No funca con la imagen, instalar debian o ubuntu

@@ -5,8 +5,9 @@ Test
 ### Requirements
 
 * Python 3+
-* SQAlchemy 0.9+
-* Flask 0.10+
+* SQAlchemy XX+
+* Flask XX+
+* etc
 
 ### Docker
 
@@ -18,11 +19,16 @@ docker build -t test .
 2- Run
 
 ```console
-docker run -it --rm test:latest
+docker run -it --rm -p 5000:5000 test:latest
 ```
 
 
 ### Local
 ```console
 python3 app/app.py
+```
+
+### Test
+```bash
+curl http://localhost:5000/air_quality
 ```
