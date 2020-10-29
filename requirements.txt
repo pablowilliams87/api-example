@@ -1,5 +1,0 @@
-flask
-flask_restful
-flask-sqlalchemy
-sqlalchemy
-#psycopg2-binary No funca con la imagen, instalar debian o ubuntu
