@@ -35,8 +35,12 @@ curl http://localhost:5000/air_quality
 
 ### Docker Compose
 0- Install
+```console
 sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
+```
 
 1- Deploy
+```console
 docker-compose up
+```
