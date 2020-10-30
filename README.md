@@ -32,3 +32,11 @@ python3 app/app.py
 ```bash
 curl http://localhost:5000/air_quality
 ```
+
+### Docker Compose
+0- Install
+sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+1- Deploy
+docker-compose up
