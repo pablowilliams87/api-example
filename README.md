@@ -1,8 +1,19 @@
 # api-example
 
-### Build Docker Image
+### Docker
+#### Build Docker Image
 ```console
 docker build -t measurement-app:1.1 .
+```
+
+#### Run Docker Image
+```console
+docker run -it --rm -p 5000:5000 test:latest
+```
+
+#### Test
+```bash
+curl http://localhost:5000/air_quality
 ```
 
 ### Docker Compose
@@ -16,7 +27,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 ```console
 docker-compose up --build -d
 
-# InitDB
+# [First Run] InitDB
 docker exec -ti api-example_api_1 flask initdb
 ```
 
