@@ -14,9 +14,9 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 #### Deploy
 ```console
-docker-compose up -d
+docker-compose up --build -d
 
-# First Run --> InitDB
+# InitDB
 docker exec -ti api-example_api_1 flask initdb
 ```
 
