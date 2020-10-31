@@ -4,10 +4,15 @@ WORKDIR /
 
 COPY app/ .
 
-RUN apt-get update && apt-get install -y libpq-dev gcc && pip install -r requirements.txt
+RUN apt-get update && apt-get install -y libpq-dev gcc
+RUN pip install -r requirements.txt
 
-ENV DB_URI=postgresql://postgres:mysecretpassword@db-host:5432/environment_airq_measurand
+ENV DB_URI=postgresql://postgres:mysecretpassword@db-host:5432/environment_airq_measurand \
+  URL_MEASUREMENTS=https://gist.githubusercontent.com/jvillarf/040c91397d779d4da02fff54708ca935/raw/f1dbbcbfbc4e3daace7d907a3cc5b716ef808014/environment_airq_measurand.csv \
+  FLASK_APP=app.py
 
 EXPOSE 5000
 
-CMD [ "python", "./app.py" ]
+#ENTRYPOINT [ "flask" ]
+
+CMD [ "flask","run","--host=0.0.0.0" ]
