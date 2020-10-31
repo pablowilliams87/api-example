@@ -20,7 +20,7 @@ docker-compose up --build -d
 docker exec -ti api-example_api_1 flask initdb
 ```
 
-#### Down
+#### Delete
 ```console
 docker-compose down
 ```
