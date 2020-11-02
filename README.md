@@ -9,6 +9,7 @@ docker build -t measurement-app:1.1 .
 #### Run Docker Image
 ```bash
 docker run -it --rm -p 5000:5000 test:latest
+
 ```
 
 #### Test
