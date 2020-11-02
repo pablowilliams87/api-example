@@ -2,7 +2,7 @@ name: Deploy on Development Environment
 
 on: 
   push:
-    branches: [ development ]
+    branches: [ main ]
   
 jobs:
   build:
