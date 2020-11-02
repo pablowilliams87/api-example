@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ## app.py
 
 Test
@@ -51,18 +50,15 @@ curl http://localhost:5000/air_quality
 ```
 
 ### Docker Compose
-<<<<<<< HEAD
 0- Install
 ```console
 =======
 #### Install
 ```bash
->>>>>>> staging
 sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
-<<<<<<< HEAD
 1- Deploy
 ```console
 docker-compose up
@@ -78,5 +74,4 @@ docker exec -ti api-example_api_1 flask initdb
 #### Delete
 ```bash
 docker-compose down
->>>>>>> staging
 ```
