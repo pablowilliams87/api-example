@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  api:
+    build: .
+    environment:
+      FLASK_ENV: development
+      DB_URI: postgresql://postgres:P0stgr3s@postgres:5432/environment_airq_measurand
+      URL_MEASUREMENTS: https://gist.githubusercontent.com/jvillarf/040c91397d779d4da02fff54708ca935/raw/f1dbbcbfbc4e3daace7d907a3cc5b716ef808014/environment_airq_measurand.csv
+    ports:
+      - "5000:5000"
+#    command: flask initdb
+  postgres:
+    image: "postgres:13.0-alpine"
+    environment: 
+      POSTGRES_PASSWORD: P0stgr3s
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - /datafiles/database/postgresql:/var/lib/postgresql/data
+

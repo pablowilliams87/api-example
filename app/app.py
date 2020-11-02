@@ -1,51 +1,38 @@
-# Prerequisites:
-# apt install libpq-dev
-# pip3 install flask flask-sqlalchemy psycopg2
 import os
+import requests
+import pandas
+# import csv
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-# from flask_migrate import Migrate
+from sqlalchemy_utils import database_exists, create_database, drop_database
 
 app = Flask(__name__)
 #app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:mysecretpassword@localhost:5432/environment_airq_measurand"
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DB_URI')
 db = SQLAlchemy(app)
-# migrate = Migrate(app, db)
+from models import EnvironmentAirqMeasurand
 
-class EnvironmentAirqMeasurand(db.Model):
-    __tablename__ = 'environment_airq_measurand'
 
-    id_environment_airq_measurand = db.Column(db.Integer, primary_key=True)
-    timestamp = db.Column(db.String())
-    id_entity = db.Column(db.String())
-    so2 = db.Column(db.Float())
-    no2 = db.Column(db.Float())
-    co = db.Column(db.Float())
-    o3 = db.Column(db.Float())
-    pm10 = db.Column(db.Float())
-    pm2_5 = db.Column(db.Float())
-
-    def __init__(self, id_environment_airq_measurand, timestamp, id_entity, so2, no2, co, o3, pm10, pm2_5):
-        self.id_environment_airq_measurand = id_environment_airq_measurand
-        self.timestamp = timestamp
-        self.id_entity = id_entity
-        self.so2 = so2
-        self.no2 = no2
-        self.co = co
-        self.o3 = o3
-        self.pm10 = pm10
-        self.pm2_5 = pm2_5
-
-    def __repr__(self):
-        return "<EnvironmentAirqMeasurand {self.id_entity}>"
+@app.cli.command("initdb")
+def initdb_command():
+  if not database_exists(os.getenv('DB_URI')):
+    create_database(os.getenv('DB_URI'))
+#  db.create_all()
+  url = os.getenv('URL_MEASUREMENTS')
+  r = requests.get(url)
+  open('/tmp/environment_airq_measurand.csv', 'wb').write(r.content)
+  file_name = '/tmp/environment_airq_measurand.csv'
+  df = pandas.read_csv(file_name)
+  engine=db.create_engine(os.getenv('DB_URI'),{})
+  df.to_sql(con=engine, index_label='id_environment_airq_measurand', name=EnvironmentAirqMeasurand.__tablename__, if_exists='replace')
 
 
 @app.route('/air_quality')
 def get_measurements():
   measurements = EnvironmentAirqMeasurand.query.all()
   results = [{
-    "timestamp": measurement.timestamp,
+    "TimeInstant": measurement.TimeInstant,
     "id_entity": measurement.id_entity,
     "so2": measurement.so2,
     "no2": measurement.no2,
@@ -56,8 +43,9 @@ def get_measurements():
   } for measurement in measurements]
 
   return {"measurements": results}
-#  return results
+  #TODO: Me gustaria que se imprima solo el json con los datos, sin ese measurements, si pongo 'return results' tira error
+
 
 if __name__ == '__main__':
-  app.run(debug=False, host='0.0.0.0')
+  app.run(debug=True, host='0.0.0.0')
 
