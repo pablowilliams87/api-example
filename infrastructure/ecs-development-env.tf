@@ -3,7 +3,7 @@ resource "aws_key_pair" "mypk_dev" {
   public_key = var.ecs_public_key_staging
 }
 
-resource "aws_ecs_cluster" "ecs-dev-env" {
+resource "aws_ecs_cluster" "ecs-cluster-dev" {
   name = var.ecs_cluster_dev
 }
 
@@ -29,5 +29,44 @@ resource "aws_instance" "ec2-ecs-dev-env" {
                                   EOF
 }
 
+resource "aws_ecs_task_definition" "postgres-ecs-task-definition" {
+  family                = "postgres"
+  volume {
+    name      = "service-storage"
+    host_path = "/datafiles/database/postgres"
+  }
+  container_definitions = <<TASK_DEFINITION
+[
+    {
+        "cpu": 2,
+        "environment": [
+            {"name": "POSTGRES_PASSWORD", "value": "P0stgr3s"}
+        ],
+        "image": "postgres:12.4-alpine",
+        "memory": 512,
+        "name": "postgres",
+        "portMappings": [
+            {
+                "containerPort": 5432,
+                "hostPort": 5432
+            }
+        ]
+    }
+]
+TASK_DEFINITION
+}
 
+resource "aws_ecs_service" "postgres-ecs-service" {
+  name            = "postgres"
+  cluster         = aws_ecs_cluster.ecs-cluster-dev.id
+  task_definition = aws_ecs_task_definition.postgres-ecs-task-definition.arn
+  desired_count   = 1
+/*
+  load_balancer {
+    target_group_arn = aws_lb_target_group.foo.arn
+    container_name   = "mongo"
+    container_port   = 8080
+  }
+*/
+}
 

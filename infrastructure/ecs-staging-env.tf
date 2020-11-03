@@ -3,7 +3,7 @@ resource "aws_key_pair" "mypk_staging" {
   public_key = var.ecs_public_key_staging
 }
 
-resource "aws_ecs_cluster" "ecs-staging-env" {
+resource "aws_ecs_cluster" "ecs-cluster-staging" {
   name = var.ecs_cluster_staging
 }
 

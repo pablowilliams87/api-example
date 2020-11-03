@@ -3,7 +3,7 @@ resource "aws_key_pair" "mypk_prod" {
   public_key = var.ecs_public_key_production
 }
 
-resource "aws_ecs_cluster" "ecs-production-env" {
+resource "aws_ecs_cluster" "ecs-cluster-production" {
   name = var.ecs_cluster_production
 }
 
