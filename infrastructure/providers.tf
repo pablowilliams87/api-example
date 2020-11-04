@@ -9,8 +9,8 @@ terraform {
 
 provider "aws" {
   region     = var.region
-  access_key = var.aws_access_key_id
-  secret_key = var.aws_secret_access_key
+  access_key = var.aws-access-key-id
+  secret_key = var.aws-secret-access-key
 }
 
 ## TODO
@@ -19,4 +19,4 @@ provider "aws" {
 # - Las instancias de produccion deberian tener un ASC
 # - Produccion deberia tener configurado
 #        --> https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_capacity_provider
-# 
+# - Agregar variables de cluster ECS

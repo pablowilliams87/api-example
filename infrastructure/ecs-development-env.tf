@@ -1,19 +1,19 @@
-resource "aws_key_pair" "mypk_dev" {
-  key_name   = "mypk_dev"
-  public_key = var.ecs_public_key_staging
+resource "aws_key_pair" "mypk-dev" {
+  key_name   = "mypk-dev"
+  public_key = var.ecs-public-key-staging
 }
 
 resource "aws_ecs_cluster" "ecs-cluster-dev" {
-  name = var.ecs_cluster_dev
+  name = var.ecs-cluster-dev
 }
 
 resource "aws_instance" "ec2-ecs-dev-env" {
-  ami                         = var.ecs_ami_id
-  instance_type               = var.ecs_type_instance_dev
+  ami                         = var.ecs-ami-id
+  instance_type               = var.ecs-type-instance-dev
   subnet_id                   = aws_subnet.ecs-subnet-dev.id
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.ecs-measurement-app-sec-group.id]
-  key_name                    = aws_key_pair.mypk_dev.id
+  key_name                    = aws_key_pair.mypk-dev.id
   iam_instance_profile        = aws_iam_instance_profile.ecs-instance-profile.id
   root_block_device {
     volume_type           = "standard"
@@ -24,13 +24,13 @@ resource "aws_instance" "ec2-ecs-dev-env" {
     Name = "ec2-ecs-dev-env"
   }
   user_data = <<EOF
-                                  #!/bin/bash
-                                  echo ECS_CLUSTER=${var.ecs_cluster_dev} >> /etc/ecs/ecs.config
-                                  EOF
+    #!/bin/bash
+    echo ECS_CLUSTER=${var.ecs-cluster-dev} >> /etc/ecs/ecs.config
+    EOF
 }
 
 resource "aws_ecs_task_definition" "postgres-ecs-task-definition" {
-  family                = "postgres"
+  family = "postgres"
   volume {
     name      = "service-storage"
     host_path = "/datafiles/database/postgres"
@@ -61,7 +61,7 @@ resource "aws_ecs_service" "postgres-ecs-service" {
   cluster         = aws_ecs_cluster.ecs-cluster-dev.id
   task_definition = aws_ecs_task_definition.postgres-ecs-task-definition.arn
   desired_count   = 1
-/*
+  /*
   load_balancer {
     target_group_arn = aws_lb_target_group.foo.arn
     container_name   = "mongo"

@@ -1,5 +1,13 @@
+output "rds-production-endpoint" {
+  value = aws_rds_cluster.rds-production-cluster.endpoint
+}
+
+output "rds-staging-endpoint" {
+  value = aws_db_instance.rds-staging.endpoint
+}
+
 output "registry" {
-  value = aws_ecr_repository.registry.repository_url
+  value = aws_ecr_repository.pablow-repository.repository_url
 }
 
 output "ecs-production-env-ip" {

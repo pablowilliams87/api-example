@@ -1,9 +1,7 @@
 resource "aws_vpc" "custom-vpc" {
-  cidr_block = var.vpc_subnet
-  /*
+  cidr_block           = var.vpc-subnet
   enable_dns_support   = true
   enable_dns_hostnames = true
-*/
   tags = {
     Name = "custom-vpc"
   }
@@ -18,26 +16,44 @@ resource "aws_internet_gateway" "custom-igw" {
 
 resource "aws_subnet" "ecs-subnet-dev" {
   vpc_id            = aws_vpc.custom-vpc.id
-  cidr_block        = var.ecs_subnet_dev
-  availability_zone = var.availability_zone
+  cidr_block        = var.ecs-subnet-dev
+  availability_zone = var.availability-zone-1
   tags = {
     Name = "ecs-measurement-api-subnet-dev"
   }
 }
 
-resource "aws_subnet" "ecs-subnet-staging" {
+resource "aws_subnet" "ecs-subnet-staging-1" {
   vpc_id            = aws_vpc.custom-vpc.id
-  cidr_block        = var.ecs_subnet_staging
-  availability_zone = var.availability_zone
+  cidr_block        = var.ecs-subnet-staging-1
+  availability_zone = var.availability-zone-1
   tags = {
     Name = "ecs-measurement-api-subnet-staging"
   }
 }
 
-resource "aws_subnet" "ecs-subnet-production" {
+resource "aws_subnet" "ecs-subnet-staging-2" {
   vpc_id            = aws_vpc.custom-vpc.id
-  cidr_block        = var.ecs_subnet_production
-  availability_zone = var.availability_zone
+  cidr_block        = var.ecs-subnet-staging-2
+  availability_zone = var.availability-zone-2
+  tags = {
+    Name = "ecs-measurement-api-subnet-staging"
+  }
+}
+
+resource "aws_subnet" "ecs-subnet-production-1" {
+  vpc_id            = aws_vpc.custom-vpc.id
+  cidr_block        = var.ecs-subnet-production-1
+  availability_zone = var.availability-zone-1
+  tags = {
+    Name = "ecs-measurement-api-subnet-production"
+  }
+}
+
+resource "aws_subnet" "ecs-subnet-production-2" {
+  vpc_id            = aws_vpc.custom-vpc.id
+  cidr_block        = var.ecs-subnet-production-2
+  availability_zone = var.availability-zone-2
   tags = {
     Name = "ecs-measurement-api-subnet-production"
   }
@@ -59,13 +75,23 @@ resource "aws_route_table_association" "ecs-subnet-dev-assoc" {
   route_table_id = aws_route_table.ecs-route-table.id
 }
 
-resource "aws_route_table_association" "ecs-subnet-staging-assoc" {
-  subnet_id      = aws_subnet.ecs-subnet-staging.id
+resource "aws_route_table_association" "ecs-subnet-staging-assoc-1" {
+  subnet_id      = aws_subnet.ecs-subnet-staging-1.id
   route_table_id = aws_route_table.ecs-route-table.id
 }
 
-resource "aws_route_table_association" "ecs-subnet-production-assoc" {
-  subnet_id      = aws_subnet.ecs-subnet-production.id
+resource "aws_route_table_association" "ecs-subnet-staging-assoc-2" {
+  subnet_id      = aws_subnet.ecs-subnet-staging-2.id
+  route_table_id = aws_route_table.ecs-route-table.id
+}
+
+resource "aws_route_table_association" "ecs-subnet-production-assoc-1" {
+  subnet_id      = aws_subnet.ecs-subnet-production-1.id
+  route_table_id = aws_route_table.ecs-route-table.id
+}
+
+resource "aws_route_table_association" "ecs-subnet-production-assoc-2" {
+  subnet_id      = aws_subnet.ecs-subnet-production-2.id
   route_table_id = aws_route_table.ecs-route-table.id
 }
 
