@@ -42,7 +42,7 @@ resource "aws_ecs_task_definition" "postgres-ecs-task-definition" {
         "environment": [
             {"name": "POSTGRES_PASSWORD", "value": "P0stgr3s"}
         ],
-        "image": "postgres:12.4-alpine",
+        "image": "postgres:11.8-alpine",
         "memory": 256,
         "name": "postgres",
         "portMappings": [
@@ -60,6 +60,34 @@ resource "aws_ecs_service" "postgres-ecs-service" {
   name            = "postgres"
   cluster         = aws_ecs_cluster.ecs-cluster-dev.id
   task_definition = aws_ecs_task_definition.postgres-ecs-task-definition.arn
+  desired_count   = 1
+  /*
+  load_balancer {
+    target_group_arn = aws_lb_target_group.foo.arn
+    container_name   = "mongo"
+    container_port   = 8080
+  }
+*/
+}
+
+resource "aws_ecs_task_definition" "app-ecs-task-definition" {
+  family = "measurement-app-dev"
+  container_definitions = <<TASK_DEFINITION
+[
+    {
+        "cpu": 2,
+        "image": "postgres:11.8-alpine",
+        "memory": 256,
+        "name": "measurement-app-dev"
+    }
+]
+TASK_DEFINITION
+}
+
+resource "aws_ecs_service" "app-ecs-service" {
+  name            = "measurement-app-dev"
+  cluster         = aws_ecs_cluster.ecs-cluster-dev.id
+  task_definition = aws_ecs_task_definition.app-ecs-task-definition.arn
   desired_count   = 1
   /*
   load_balancer {
