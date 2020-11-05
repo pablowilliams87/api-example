@@ -43,7 +43,7 @@ resource "aws_ecs_task_definition" "postgres-ecs-task-definition" {
             {"name": "POSTGRES_PASSWORD", "value": "P0stgr3s"}
         ],
         "image": "postgres:12.4-alpine",
-        "memory": 512,
+        "memory": 256,
         "name": "postgres",
         "portMappings": [
             {
