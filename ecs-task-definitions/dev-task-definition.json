@@ -26,7 +26,7 @@
       ],
       "mountPoints": [],
       "secrets": null,
-      "memory": 512,
+      "memory": 256,
       "memoryReservation": null,
       "volumesFrom": [],
       "name": "measurement-app-dev"
