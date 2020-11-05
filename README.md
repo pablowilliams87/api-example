@@ -1,36 +1,5 @@
-## app.py
-
-Test
-
-### Requirements
-
-* Python 3+
-* SQAlchemy XX+
-* Flask XX+
-* etc
-
-### Docker
-
-1- Build
-
-```console
-docker build -t test .
-```
-2- Run
-
-```console
-docker run -it --rm -p 5000:5000 test:latest
-```
-
-
-### Local
-```console
-python3 app/app.py
-```
-
-### Test
-=======
-# API
+# Measurement APP
+## API
 Measurement-app is an API written in Python, It uses SQLAlchemy as ORM to connect to Postgres Database. The API exposes the endpoint /air_quality to generate air quality measurements csv.
 
 ### App
@@ -63,14 +32,15 @@ Example: ./build_docker_image.sh measurement-app:1.1
 ```bash
 docker run -d --name measurement-app -p 5000:5000 -e DB_URI=<postgres-db-uri> <image>
 ```
+
 DB_URI is an envvar that define postgres URI to connect to database. Example
-```
+```bash
 DB_URI=postgresql://postgres:P0stgr3s@192.168.87.10:5432/environment_airq_measurand
 ```
 
-##### Database
-Not having a postgres to test, the following command create a postgres container
-```
+#### Database
+Not having a Postgres DB to test, the following command create a postgres container
+```bash
 # Ephemeral postgres (Caution!! postgres data is not persistent)
 docker run --name postgres-test -p 5432:5432 -e POSTGRES_PASSWORD=P0stgr3s -d postgres 
 
@@ -88,6 +58,7 @@ docker exec -ti measurement-app flask initdb
 ```bash
 curl http://localhost:5000/air_quality
 ```
+
 
 ### Docker Compose
 0- Install
