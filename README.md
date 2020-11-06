@@ -149,5 +149,7 @@ kubectl apply -f api-example/kubernetes/cache.yml
 I chose redis as cache technology because 
 - It permits to create a redis clusters to scale in case of application grows 
 - It permits to insert redis keys with fixed TTL as invalidation strategy
-- It permits to configure prefix keys to do partial cache clearing (ex: clear all keys with prefix XX)
-- API framework (Flask) has a native integration using CACHE_TYPE redis 
+- It permits to configure prefix keys to do partial cache clearing (e.g.: clear all keys with prefix XX)
+- API framework (Flask) has a native integration using CACHE_TYPE redis
+
+
