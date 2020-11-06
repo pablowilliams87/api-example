@@ -23,13 +23,15 @@ spec:
 apiVersion: v1 
 kind: Service
 metadata: 
-   name: redis-cache-svc
+  name: redis-cache-svc
+  labels:
+    app: redis-cache
 spec: 
-   selector: 
-      app: redis-cache 
-   type: ClusterIP 
-   ports: 
-   - name: redis-cache
-     port: 6379
-     targetPort: 6379
-     protocol: TCP
+  selector: 
+    app: redis-cache 
+  type: ClusterIP 
+  ports: 
+  - name: redis-cache
+    port: 6379
+    targetPort: 6379
+    protocol: TCP

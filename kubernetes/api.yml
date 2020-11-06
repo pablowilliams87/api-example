@@ -23,13 +23,15 @@ spec:
 apiVersion: v1 
 kind: Service
 metadata: 
-   name: measurement-app-svc
+  name: measurement-app-svc
+  labels:
+    app: measurement-app
 spec: 
-   selector: 
-      app: measurement-app 
-   type: ClusterIP 
-   ports: 
-   - name: measurement-app
-     port: 5000
-     targetPort: 5000
-     protocol: TCP
+  selector: 
+    app: measurement-app 
+  type: ClusterIP 
+  ports: 
+  - name: measurement-app
+    port: 5000
+    targetPort: 5000
+    protocol: TCP
