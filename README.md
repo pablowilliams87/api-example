@@ -33,9 +33,9 @@ Example: ./build_docker_image.sh measurement-app:1.1
 docker run -d --name measurement-app -p 5000:5000 -e DB_URI=<postgres-db-uri> <image>
 ```
 
-    DB_URI is an envvar that define postgres URI to connect to database. Example
+DB_URI is an envvar that define postgres URI to connect to database. Example
 ```bash
-    DB_URI=postgresql://postgres:P0stgr3s@192.168.87.10:5432/environment_airq_measurand
+DB_URI=postgresql://postgres:P0stgr3s@192.168.87.10:5432/environment_airq_measurand
 ```
 
 #### Database
@@ -62,7 +62,7 @@ curl http://localhost:5000/air_quality
 
 ### Docker Compose
 
-#### Deploy
+#### Deploy Compose
 ```bash
 docker-compose up --build -d
 ```
@@ -72,7 +72,7 @@ docker-compose up --build -d
 docker exec -ti api-example_api_1 flask initdb
 ```
 
-#### Delete
+#### Delete Compose
 ```bash
 docker-compose down
 ```
