@@ -19,12 +19,13 @@ metadata:
   labels:
     app: postgres
 spec:
-  ports:
-  - port: 5432
-    name: postgres
-  clusterIP: None
   selector:
     app: postgres
+  type: clusterIP
+  ports:
+  - name: postgres
+    port: 5432
+    targetPort: 5432
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -43,7 +44,7 @@ spec:
     spec:
       containers:
       - name: postgres
-        image: k8s.gcr.io/nginx-slim:0.8
+        image: postgres:11.8-alpine
         ports:
         - containerPort: 5432
           name: postgres
@@ -55,7 +56,6 @@ spec:
       name: postgres-data
     spec:
       accessModes: [ "ReadWriteOnce" ]
- #     storageClassName: "my-storage-class"
       resources:
         requests:
           storage: 10Gi
