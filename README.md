@@ -129,3 +129,25 @@ This project has the following pipelines
 
 
 ## Deployment
+### API Container
+Creates a Kubernetes Deployment with 5 API container's replicas, and creates a service type ClusterIP to expose it internally.
+```bash
+kubectl apply -f api-example/kubernetes/api.yml
+```
+
+### DB
+Creates a Kubernetes StatefulSet with 1 postgres's replica, creates a PersistentVolume using NFS plugin to persist Database, and expose Postgres internally to Kubernetes Cluster using ClusterIP services. Using this services API reaches DB through the endpoint `postgres-svc.default.svc.cluster.local`
+```bash
+kubectl apply -f api-example/kubernetes/db.yml
+```
+
+### Cache
+Creates a Kubernetes deployment with 1 redis's replica, and creates a service type ClusterIP to expose it internally. Using this services API reaches redis-cache through the endpoint `redis-cache-svc.default.svc.cluster.local`
+```bash
+kubectl apply -f api-example/kubernetes/cache.yml
+```
+I chose redis as cache technology because 
+- It permits to create a redis clusters to scale in case of application grows 
+- It permits to insert redis keys with fixed TTL as invalidation strategy
+- It permits to configure prefix keys to do partial cache clearing (ex: clear all keys with prefix XX)
+- API framework (Flask) has a native integration using CACHE_TYPE redis 
