@@ -153,3 +153,21 @@ I chose redis as cache technology because
 - API framework (Flask) has a native integration using CACHE_TYPE redis
 
 
+## Monitoring, logs and backup
+### Monitoring
+Prometheus Server will be used as backend to monitor the application and the infrastructure. Prometheus has an schema of pulling data (instead of Zabbix, Nagios or InfluxDB that they have agents to collect and send metrics to server) getting metrics from exporters, I have to deploy the following exporters
+- node-exporter: It collects server metrics. CPU, Memory, Disk Usage, IO Statistics, NET Statistics, Uptime.
+- flask-exporter: It collects metrics like Requests per Second, Requests duration, Resources usage (CPU, Memory).
+- postgres-exporter: 
+
+Grafana Server will be used as frontend monitoring service. Grafana will query prometheus as a data source, and shows metrics using different Dashboards (Server Metrics Dashboard, API Metrics Dashboard, Postgres Metrics Dashboard)
+
+Prometheus Alert Manager will be used to send alerts notifications, configuring alerts rules based on thresholds. Alertmanager sends notification via Email, Slack, PagerDuty, and others.
+
+### Logging
+About logging we have two options:
+- If we do not need to do real-time analysis of the data we can use rsyslog to collect logging data and send it to Rsyslog server.
+- If we need to do real-time analysis we can use EFK Stack. Fluentd will be used as data collect, Elasticsearch as logging server. Kibana will be used as frontend, it permits to create dashbords and analize logs for detection of behavior patterns. It is useful to detect issues on application e.g. errors increments. 
+
+
+### Backups
