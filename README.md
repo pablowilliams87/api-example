@@ -112,13 +112,19 @@ To implement CI I choose GitHub Actions because is fully integrated with Github 
 
 This project has the following pipelines
 - A pull request to the main branch generates a Docker images, the image is pushes to AWS ECR and then it is deployed to Production ECS.
+
 [branch_production_pull_request.yml](.github/workflows/branch_production_pull_request.yml) 
 
+
 - A pull request to the staging branch generates a Docker images, the image is pushes to AWS ECR and then it is deployed to Staging ECS.
+
 [branch_staging_pull_request.yml](.github/workflows/branch_staging_pull_request.yml)
 
-- A pull request to the development branch generates a Docker images, the image is pushes to AWS ECR and then it is deployed to Development ECS.
+
+- A pull request to the development branch generates a Docker images, the image is pushes to AWS ECR and then it is deployed to Development ECS. 
+
 [branch_development_pull_request.yml](.github/workflows/branch_development_pull_request.yml)
+
 
 
 
