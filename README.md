@@ -98,4 +98,18 @@ Infrastructure uses Route53 alias to route to Application Load Balancer endpoint
 
 
 ### CI
-To implement CI I choose GitHub Actions because is a tool that 
+To implement CI I choose GitHub Actions because is fully integrated with Github and does not require and external server/agent. To use it I have to create GitHub actions pipelines in .github/workflows folder. Login to AWS account is through secrets configuration on GitHub account, and then, they are instantiated from the pipeline
+```
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+```
+
+
+
+
+
+
