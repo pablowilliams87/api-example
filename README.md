@@ -4,7 +4,7 @@ Measurement-app is an API written in Python, It uses SQLAlchemy as ORM to connec
 
 ### App
 ```
-app
+app/
  |--> app.py --> Main code
  |--> models.py --> Object modeler
  |--> requirements.txt --> Python requirements
@@ -12,7 +12,7 @@ app
 
 ### Tools
 ```
-tools
+tools/
  |--> build_docker_image.sh
  |--> 
  |--> 
@@ -33,9 +33,9 @@ Example: ./build_docker_image.sh measurement-app:1.1
 docker run -d --name measurement-app -p 5000:5000 -e DB_URI=<postgres-db-uri> <image>
 ```
 
-DB_URI is an envvar that define postgres URI to connect to database. Example
+    DB_URI is an envvar that define postgres URI to connect to database. Example
 ```bash
-DB_URI=postgresql://postgres:P0stgr3s@192.168.87.10:5432/environment_airq_measurand
+    DB_URI=postgresql://postgres:P0stgr3s@192.168.87.10:5432/environment_airq_measurand
 ```
 
 #### Database
@@ -61,24 +61,14 @@ curl http://localhost:5000/air_quality
 
 
 ### Docker Compose
-0- Install
-```console
-=======
-#### Install
-```bash
-sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-```
 
-1- Deploy
-```console
-docker-compose up
-=======
 #### Deploy
 ```bash
 docker-compose up --build -d
+```
 
-# [First Run] InitDB
+#### [First Run] InitDB
+```
 docker exec -ti api-example_api_1 flask initdb
 ```
 
