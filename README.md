@@ -81,7 +81,7 @@ docker-compose down
 ### Infrastructure
 Cloud Provider: Amazon
 
-![alt text](http://url/to/ecs-infra.png)
+![alt text](infrastructure/ecs_infra.png)
 
 
 ### CI
