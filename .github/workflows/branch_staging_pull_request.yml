@@ -2,7 +2,7 @@ name: Deploy on Development Environment
 
 on: 
   pull_request:
-    branches: [ development ]
+    branches: [ staging ]
   
 jobs:
   build:
@@ -36,6 +36,6 @@ jobs:
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: dev-task-definition.json
-          container-name: dev-measurement-app
+          task-definition: staging-task-definition.json
+          container-name: staging-measurement-app
           image: ${{ steps.build-image.outputs.image }}
