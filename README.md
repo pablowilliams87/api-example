@@ -100,7 +100,7 @@ Infrastructure uses Route53 alias to route to Application Load Balancer endpoint
 
 ### CI
 
-To implement CI I choose GitHub Actions because is fully integrated with Github and does not require and external server/agent. To use it I have to create GitHub actions pipelines in .github/workflows folder. Login to AWS account is through secrets configuration on GitHub account, and then, they are instantiated from the pipeline
+To implement CI I choose GitHub Actions because is fully integrated with Github and does not require and external server/agent. To use it I have created GitHub actions pipelines in .github/workflows folder. Login to AWS account is through secrets configuration on GitHub account, once configured, they are instantiated from the pipeline
 ```
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -115,11 +115,9 @@ This project has the following pipelines
 [branch_production_pull_request.yml](.github/workflows/branch_production_pull_request.yml) 
 
 - A pull request to the staging branch generates a Docker images, the image is pushes to AWS ECR and then it is deployed to Staging ECS.
-
 [branch_staging_pull_request.yml](.github/workflows/branch_staging_pull_request.yml)
 
 - A pull request to the development branch generates a Docker images, the image is pushes to AWS ECR and then it is deployed to Development ECS.
-
 [branch_development_pull_request.yml](.github/workflows/branch_development_pull_request.yml)
 
 
