@@ -97,7 +97,9 @@ All environments have an Application Load Balancer as ingress, Production has an
 Infrastructure uses Route53 alias to route to Application Load Balancer endpoint.
 
 
+
 ### CI
+
 To implement CI I choose GitHub Actions because is fully integrated with Github and does not require and external server/agent. To use it I have to create GitHub actions pipelines in .github/workflows folder. Login to AWS account is through secrets configuration on GitHub account, and then, they are instantiated from the pipeline
 ```
       - name: Configure AWS credentials
@@ -108,8 +110,18 @@ To implement CI I choose GitHub Actions because is fully integrated with Github 
           aws-region: us-east-1
 ```
 
-
-
-
+This project has the following pipelines
+- A pull request to the main branch generates a Docker images, the image is pushes to AWS ECR and then it is deployed to Production ECS.
+```
+[.github/workflows/branch_dev_pull_request.yml] branch_dev_pull_request.yml
+```
+- A pull request to the staging branch generates a Docker images, the image is pushes to AWS ECR and then it is deployed to Staging ECS.
+```
+.github/workflows/branch_dev_pull_request.yml
+```
+- A pull request to the development branch generates a Docker images, the image is pushes to AWS ECR and then it is deployed to Development ECS.
+```
+.github/workflows/branch_dev_pull_request.yml
+```
 
 
