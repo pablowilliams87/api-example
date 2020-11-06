@@ -1,77 +1,88 @@
-## app.py
+# Measurement APP
+## API
+Measurement-app is an API written in Python, It uses SQLAlchemy as ORM to connect to Postgres Database. The API exposes the endpoint /air_quality to generate air quality measurements csv.
 
-Test
+### App
+```
+app/
+ |--> app.py --> Main code
+ |--> models.py --> Object modeler
+ |--> requirements.txt --> Python requirements
+```
 
-### Requirements
-
-* Python 3+
-* SQAlchemy XX+
-* Flask XX+
-* etc
+### Tools
+```
+tools/
+ |--> build_docker_image.sh
+ |--> 
+ |--> 
+```
 
 ### Docker
 
-1- Build
-
-```console
-docker build -t test .
-```
-2- Run
-
-```console
-docker run -it --rm -p 5000:5000 test:latest
-```
-
-
-### Local
-```console
-python3 app/app.py
-```
-
-### Test
-=======
-# api-example
-
-### Docker
 #### Build Docker Image
 ```bash
-docker build -t measurement-app:1.1 .
+cd tools
+./build_docker_image.sh <TAG>
+
+Example: ./build_docker_image.sh measurement-app:1.1
 ```
 
 #### Run Docker Image
 ```bash
-docker run -it --rm -p 5000:5000 test:latest
+docker run -d --name measurement-app -p 5000:5000 -e DB_URI=<postgres-db-uri> <image>
 ```
 
-#### Test
->>>>>>> staging
+- `DB_URI` is an envvar that define postgres URI to connect to database. Example
+```bash
+DB_URI=postgresql://postgres:P0stgr3s@192.168.87.10:5432/environment_airq_measurand
+```
+
+#### Database
+Not having a Postgres DB to test, the following command create a postgres container
+```bash
+# Ephemeral postgres (Caution!! postgres data is not persistent)
+docker run --name postgres-test -p 5432:5432 -e POSTGRES_PASSWORD=P0stgr3s -d postgres 
+
+# Persistent postgres
+docker run --name postgres-test -p 5432:5432 -e POSTGRES_PASSWORD=P0stgr3s -v /datafiles/database/postgres:/var/lib/postgresql/data -d postgres 
+```
+
+#### Load Measurement data on DB
+To create and Load DB
+```bash
+docker exec -ti measurement-app flask initdb
+```
+
+#### Test App
 ```bash
 curl http://localhost:5000/air_quality
 ```
 
-### Docker Compose
-0- Install
-```console
-=======
-#### Install
-```bash
-sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-```
 
-1- Deploy
-```console
-docker-compose up
-=======
-#### Deploy
+### Docker Compose
+
+#### Deploy Compose
 ```bash
 docker-compose up --build -d
+```
 
-# [First Run] InitDB
+#### [First Run] InitDB
+```
 docker exec -ti api-example_api_1 flask initdb
 ```
 
-#### Delete
+#### Delete Compose
 ```bash
 docker-compose down
 ```
+
+## CI (Continuous Integration)
+### Infrastructure
+Cloud Provider: Amazon
+
+![alt text](http://url/to/ecs-infra.png)
+
+
+### CI
+To implement CI I choose GitHub Actions because is a tool that 
