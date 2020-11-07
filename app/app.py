@@ -43,7 +43,6 @@ def get_measurements():
   } for measurement in measurements]
 
   return {"measurements": results}
-  #TODO: Me gustaria que se imprima solo el json con los datos, sin ese measurements, si pongo 'return results' tira error
 
 
 if __name__ == '__main__':
