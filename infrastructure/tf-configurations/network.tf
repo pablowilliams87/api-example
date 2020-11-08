@@ -1,109 +1,240 @@
-resource "aws_vpc" "custom-vpc" {
-  cidr_block = var.vpc_subnet
-  /*
+resource "aws_vpc" "custom_vpc" {
+  cidr_block           = var.vpc_subnet
   enable_dns_support   = true
   enable_dns_hostnames = true
-*/
   tags = {
-    Name = "custom-vpc"
+    Name = "custom_vpc"
   }
 }
 
-resource "aws_internet_gateway" "custom-igw" {
-  vpc_id = aws_vpc.custom-vpc.id
+resource "aws_internet_gateway" "custom_igw" {
+  vpc_id = aws_vpc.custom_vpc.id
   tags = {
-    Name = "custom-igw"
+    Name = "custom_igw"
   }
 }
 
-resource "aws_subnet" "ecs-subnet-dev" {
-  vpc_id            = aws_vpc.custom-vpc.id
-  cidr_block        = var.ecs_subnet_dev
-  availability_zone = var.availability_zone
+resource "aws_eip" "nat" {
+  vpc        = true
+  depends_on = [aws_internet_gateway.custom_igw]
+}
+
+# NAT Gateway will be located on the first production subnet
+resource "aws_nat_gateway" "custom_natgw" {
+  allocation_id = aws_eip.nat.id
+  subnet_id  = aws_subnet.production_public.0.id
+  depends_on = [aws_internet_gateway.custom_igw]
+}
+
+
+resource "aws_subnet" "development_public" {
+  count = length(var.development_public_subnets)
+
+  vpc_id            = aws_vpc.custom_vpc.id
+  cidr_block        = element(values(var.development_public_subnets), count.index)
+  availability_zone = element(keys(var.development_public_subnets), count.index)
   tags = {
-    Name = "ecs-measurement-api-subnet-dev"
+    Name = "development_public_${count.index}"
   }
 }
 
-resource "aws_subnet" "ecs-subnet-staging" {
-  vpc_id            = aws_vpc.custom-vpc.id
-  cidr_block        = var.ecs_subnet_staging
-  availability_zone = var.availability_zone
+resource "aws_subnet" "development_private" {
+  count = length(var.development_private_subnets)
+
+  vpc_id            = aws_vpc.custom_vpc.id
+  cidr_block        = element(values(var.development_private_subnets), count.index)
+  availability_zone = element(keys(var.development_private_subnets), count.index)
   tags = {
-    Name = "ecs-measurement-api-subnet-staging"
+    Name = "development_private_${count.index}"
   }
 }
 
-resource "aws_subnet" "ecs-subnet-production" {
-  vpc_id            = aws_vpc.custom-vpc.id
-  cidr_block        = var.ecs_subnet_production
-  availability_zone = var.availability_zone
+resource "aws_subnet" "staging_public" {
+  count = length(var.staging_public_subnets)
+
+  vpc_id            = aws_vpc.custom_vpc.id
+  cidr_block        = element(values(var.staging_public_subnets), count.index)
+  availability_zone = element(keys(var.staging_public_subnets), count.index)
   tags = {
-    Name = "ecs-measurement-api-subnet-production"
+    Name = "staging_public_${count.index}"
   }
 }
 
-resource "aws_route_table" "ecs-route-table" {
-  vpc_id = aws_vpc.custom-vpc.id
+resource "aws_subnet" "staging_private" {
+  count = length(var.staging_private_subnets)
+
+  vpc_id            = aws_vpc.custom_vpc.id
+  cidr_block        = element(values(var.staging_private_subnets), count.index)
+  availability_zone = element(keys(var.staging_private_subnets), count.index)
+  tags = {
+    Name = "staging_private_${count.index}"
+  }
+}
+
+resource "aws_subnet" "production_public" {
+  count = length(var.production_public_subnets)
+
+  vpc_id            = aws_vpc.custom_vpc.id
+  cidr_block        = element(values(var.production_public_subnets), count.index)
+  availability_zone = element(keys(var.production_public_subnets), count.index)
+  tags = {
+    Name = "production_public_${count.index}"
+  }
+}
+
+resource "aws_subnet" "production_private" {
+  count = length(var.production_private_subnets)
+
+  vpc_id            = aws_vpc.custom_vpc.id
+  cidr_block        = element(values(var.production_private_subnets), count.index)
+  availability_zone = element(keys(var.production_private_subnets), count.index)
+  tags = {
+    Name = "production_private_${count.index}"
+  }
+}
+
+resource "aws_route_table" "development_public" {
+  vpc_id = aws_vpc.custom_vpc.id
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.custom-igw.id
+    gateway_id = aws_internet_gateway.custom_igw.id
   }
   tags = {
-    Name = "ecs-measurement-routing-table"
+    Name = "public-development-route-table"
   }
 }
 
-resource "aws_route_table_association" "ecs-subnet-dev-assoc" {
-  subnet_id      = aws_subnet.ecs-subnet-dev.id
-  route_table_id = aws_route_table.ecs-route-table.id
+resource "aws_route_table" "staging_public" {
+  vpc_id = aws_vpc.custom_vpc.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.custom_igw.id
+  }
+  tags = {
+    Name = "public-staging-route-table"
+  }
 }
 
-resource "aws_route_table_association" "ecs-subnet-staging-assoc" {
-  subnet_id      = aws_subnet.ecs-subnet-staging.id
-  route_table_id = aws_route_table.ecs-route-table.id
+resource "aws_route_table" "production_public" {
+  vpc_id = aws_vpc.custom_vpc.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.custom_igw.id
+  }
+  tags = {
+    Name = "public-production-route-table"
+  }
 }
 
-resource "aws_route_table_association" "ecs-subnet-production-assoc" {
-  subnet_id      = aws_subnet.ecs-subnet-production.id
-  route_table_id = aws_route_table.ecs-route-table.id
+resource "aws_route_table" "development_private" {
+  vpc_id = aws_vpc.custom_vpc.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.custom_natgw.id
+  }
+
+  tags = {
+    Name = "private-development-route-table"
+  }
 }
 
-resource "aws_security_group" "ecs-measurement-app-sec-group" {
-  name        = "ecs-measurement-app-sec-group"
-  description = "Allow public access"
-  vpc_id      = aws_vpc.custom-vpc.id
+resource "aws_route_table" "staging_private" {
+  vpc_id = aws_vpc.custom_vpc.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.custom_natgw.id
+  }
+  tags = {
+    Name = "private-staging-route-table"
+  }
+}
+
+resource "aws_route_table" "production_private" {
+  vpc_id = aws_vpc.custom_vpc.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_nat_gateway.custom_natgw.id
+  }
+  tags = {
+    Name = "private-production-route-table"
+  }
+}
+
+resource "aws_route_table_association" "development_public" {
+  count = length(var.development_public_subnets)
+
+  subnet_id      = element(aws_subnet.development_public.*.id, count.index)
+  route_table_id = aws_route_table.development_public.id
+}
+
+resource "aws_route_table_association" "development_private" {
+  count = length(var.development_private_subnets)
+
+  subnet_id      = element(aws_subnet.development_private.*.id, count.index)
+  route_table_id = aws_route_table.development_private.id
+}
+
+
+resource "aws_route_table_association" "staging_public" {
+  count = length(var.staging_public_subnets)
+
+  subnet_id      = element(aws_subnet.staging_public.*.id, count.index)
+  route_table_id = aws_route_table.staging_public.id
+}
+
+resource "aws_route_table_association" "staging_private" {
+  count = length(var.staging_public_subnets)
+
+  subnet_id      = element(aws_subnet.staging_public.*.id, count.index)
+  route_table_id = aws_route_table.staging_public.id
+}
+
+resource "aws_route_table_association" "production_public" {
+  count = length(var.production_public_subnets)
+
+  subnet_id      = element(aws_subnet.production_public.*.id, count.index)
+  route_table_id = aws_route_table.production_public.id
+}
+
+resource "aws_route_table_association" "production_private" {
+  count = length(var.production_public_subnets)
+
+  subnet_id      = element(aws_subnet.production_public.*.id, count.index)
+  route_table_id = aws_route_table.production_public.id
+}
+
+resource "aws_security_group" "bastion_host" {
+  name   = "sh-bastion-host"
+  vpc_id = aws_vpc.custom_vpc.id
+
   ingress {
+    description = "Allow SSH"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  ingress {
-    from_port   = 5000
-    to_port     = 5000
-    protocol    = "tcp"
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  /*
-   ingress {
-      from_port = 0
-      to_port = 0
-      protocol = "tcp"
-      cidr_blocks = [
-         "${var.test_public_01_cidr}",
-         "${var.test_public_02_cidr}"]
-    }
-*/
-  egress {
-    # Allow all Egress Traffic
-    from_port = "0"
-    to_port   = "0"
-    protocol  = "-1"
-    cidr_blocks = [
-    "0.0.0.0/0"]
-  }
+}
+
+resource "aws_instance" "bastion_host" {
+  ami                    = var.bastion_ami_id
+  instance_type          = var.bastion_instance_type
+  key_name               = aws_key_pair.development_pk.key_name
+  vpc_security_group_ids = [aws_security_group.bastion_host.id]
+  subnet_id              = aws_subnet.staging_public.0.id
   tags = {
-    Name = "ecs-measurement-app-sec-group"
+    Name = "bastion-host"
   }
+}
+
+resource "aws_eip" "bastion_host" {
+  instance = aws_instance.bastion_host.id
+  vpc      = true
 }

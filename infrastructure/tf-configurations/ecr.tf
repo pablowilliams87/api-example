@@ -1,3 +1,3 @@
-resource "aws_ecr_repository" "registry" {
+resource "aws_ecr_repository" "pablow-registry" {
   name = "registry"
 }
