@@ -54,9 +54,15 @@ resource "aws_security_group" "development_ecs" {
 resource "aws_key_pair" "development_pk" {
   key_name   = "development_pk"
   public_key = var.development_ecs_public_key
+  tags = {
+    Name        = "development_pk"
+    Environment = "development"
+  }
 }
 
 resource "aws_launch_configuration" "development" {
+  #  name                 = "development-lc"
+  name_prefix          = "development-ecs-"
   image_id             = var.development_ecs_ami_id
   key_name             = aws_key_pair.development_pk.key_name
   iam_instance_profile = aws_iam_instance_profile.ecs_instance_profile.name
@@ -66,8 +72,8 @@ resource "aws_launch_configuration" "development" {
 }
 
 resource "aws_autoscaling_group" "development" {
-  name                = "development-asg"
-  vpc_zone_identifier = aws_subnet.development_private.*.id
+  name                      = "development-asg"
+  vpc_zone_identifier       = aws_subnet.development_private.*.id
   launch_configuration      = aws_launch_configuration.development.name
   desired_capacity          = var.development_asg_capacity[0]
   min_size                  = var.development_asg_capacity[1]
@@ -91,7 +97,8 @@ resource "aws_lb" "development" {
   }
 */
   tags = {
-    Environment = "Development"
+    Name        = "development"
+    Environment = "development"
   }
 }
 
@@ -100,6 +107,10 @@ resource "aws_lb_target_group" "development_api" {
   port     = 5000
   protocol = "HTTP"
   vpc_id   = aws_vpc.custom_vpc.id
+  tags = {
+    Name        = "development_api"
+    Environment = "development"
+  }
 }
 
 resource "aws_lb_listener" "development_api" {

@@ -22,8 +22,8 @@ resource "aws_eip" "nat" {
 # NAT Gateway will be located on the first production subnet
 resource "aws_nat_gateway" "custom_natgw" {
   allocation_id = aws_eip.nat.id
-  subnet_id  = aws_subnet.production_public.0.id
-  depends_on = [aws_internet_gateway.custom_igw]
+  subnet_id     = aws_subnet.production_public.0.id
+  depends_on    = [aws_internet_gateway.custom_igw]
 }
 
 
@@ -183,10 +183,10 @@ resource "aws_route_table_association" "staging_public" {
 }
 
 resource "aws_route_table_association" "staging_private" {
-  count = length(var.staging_public_subnets)
+  count = length(var.staging_private_subnets)
 
-  subnet_id      = element(aws_subnet.staging_public.*.id, count.index)
-  route_table_id = aws_route_table.staging_public.id
+  subnet_id      = element(aws_subnet.staging_private.*.id, count.index)
+  route_table_id = aws_route_table.staging_private.id
 }
 
 resource "aws_route_table_association" "production_public" {
@@ -197,10 +197,10 @@ resource "aws_route_table_association" "production_public" {
 }
 
 resource "aws_route_table_association" "production_private" {
-  count = length(var.production_public_subnets)
+  count = length(var.production_private_subnets)
 
-  subnet_id      = element(aws_subnet.production_public.*.id, count.index)
-  route_table_id = aws_route_table.production_public.id
+  subnet_id      = element(aws_subnet.production_private.*.id, count.index)
+  route_table_id = aws_route_table.production_private.id
 }
 
 resource "aws_security_group" "bastion_host" {

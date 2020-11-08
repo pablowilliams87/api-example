@@ -1,15 +1,33 @@
 output "registry" {
-  value = aws_ecr_repository.registry.repository_url
+  value = aws_ecr_repository.pablow_registry.repository_url
 }
 
-output "ecs-production-env-ip" {
-  value = aws_instance.ec2-ecs-production-env.public_ip
+output "bastion-host" {
+  value = aws_eip.bastion_host.public_ip
 }
 
-output "ecs-staging-env-ip" {
-  value = aws_instance.ec2-ecs-staging-env.public_ip
+output "dev-load-balancer" {
+  value = aws_lb.development.dns_name
 }
 
-output "ecs-dev-env-ip" {
-  value = aws_instance.ec2-ecs-dev-env.public_ip
+output "stg-load-balancer" {
+  value = aws_lb.staging.dns_name
 }
+
+output "prod-load-balancer" {
+  value = aws_lb.production.dns_name
+}
+
+output "dev-db-endpoint" {
+  value = aws_lb.development.dns_name
+}
+
+output "stg-db-endpoint" {
+  value = aws_lb.staging.dns_name
+}
+
+output "prod-db-endpoint" {
+  value = aws_lb.production.dns_name
+}
+
+
