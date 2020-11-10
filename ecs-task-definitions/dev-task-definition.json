@@ -9,7 +9,7 @@
         }
       ],
       "command": null,
-      "cpu": 2,
+      "cpu": 1,
       "environment": [
         {
           "name": "FLASK_ENV",
@@ -17,7 +17,7 @@
         },
 		{
           "name": "DB_URI",
-          "value": "postgresql://postgres:P0stgr3s@postgres:5432/environment_airq_measurand"
+          "value": "postgresql://postgres:P0stgr3s@development-rds.cp9xnt0abzzt.us-east-1.rds.amazonaws.com:5432/environment_airq_measurand"
         },
 		{
           "name": "URL_MEASUREMENTS",
@@ -37,7 +37,7 @@
   "compatibilities": [
     "EC2"
   ],
-  "family": "measurement-app-dev",
+  "family": "development-measurement-app",
   "networkMode": null,
   "cpu": null,
   "volumes": []
