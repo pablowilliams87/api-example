@@ -133,6 +133,11 @@ cd infrastructure/<environment>
 terraform apply -auto-approve -var="init_db=1" ; terraform apply -auto-approve -var="init_db=0"
 ```
 
+- Access
+```
+http://<terraform_output_load_balancer_dns_name>/air_quality
+```
+
 
 ### CI
 
