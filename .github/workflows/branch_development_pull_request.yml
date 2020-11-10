@@ -37,6 +37,14 @@ jobs:
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: development-task-definition.json
+          task-definition: ecs-task-definitions/development-task-definition.json
           container-name: development-measurement-app
           image: ${{ steps.build-image.outputs.image }}
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: development-measurement-app
+          cluster: dev-ecs-measurement-app
+          wait-for-service-stability: true
