@@ -3,8 +3,8 @@
     {
       "portMappings": [
         {
-          "hostPort": 5000,
-          "containerPort": 0
+          "hostPort": 0,
+          "containerPort": 5000
         }
       ],
       "command": null,
