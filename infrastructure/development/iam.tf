@@ -1,6 +1,6 @@
 ## ECS Service Role
 resource "aws_iam_role" "ecs_service_role" {
-  name               = "ecs-service-role"
+  name               = "${var.environment}-ecs-service-role"
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.ecs_service_policy.json
 }
@@ -24,7 +24,7 @@ data "aws_iam_policy_document" "ecs_service_policy" {
 
 ## ECS Instance Role
 resource "aws_iam_role" "ecs_instance_role" {
-  name               = "ecs-instance-role"
+  name               = "${var.environment}-ecs-instance-role"
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.ecs_instance_policy.json
 }
@@ -46,7 +46,7 @@ resource "aws_iam_role_policy_attachment" "ecs_instance_role_attachment" {
 }
 
 resource "aws_iam_instance_profile" "ecs_instance_profile" {
-  name = "ecs-instance-profile"
+  name = "${var.environment}-ecs-instance-profile"
   path = "/"
   role = aws_iam_role.ecs_instance_role.id
 }
