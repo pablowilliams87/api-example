@@ -123,8 +123,14 @@ aws configure
 
 - Apply configuration
 ```bash
-cd infrastructure/environment
+cd infrastructure/<environment>
 terraform apply
+```
+
+- To initialize DB
+```bash
+cd infrastructure/<environment>
+terraform apply -auto-approve -var="init_db=1" ; terraform apply -auto-approve -var="init_db=0"
 ```
 
 
