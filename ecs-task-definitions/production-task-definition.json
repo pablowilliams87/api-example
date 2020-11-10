@@ -3,13 +3,12 @@
     {
       "portMappings": [
         {
-          "hostPort": 5000,
-          "protocol": "tcp",
+          "hostPort": 0,
           "containerPort": 5000
         }
       ],
       "command": null,
-      "cpu": 2,
+      "cpu": 1024,
       "environment": [
         {
           "name": "FLASK_ENV",
@@ -26,7 +25,7 @@
       ],
       "mountPoints": [],
       "secrets": null,
-      "memory": 256,
+      "memory": 512,
       "memoryReservation": null,
       "volumesFrom": [],
       "name": "measurement-app"
