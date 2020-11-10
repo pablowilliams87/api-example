@@ -37,5 +37,5 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: production-task-definition.json
-          container-name: measurement-app
+          container-name: measurement-app-dev
           image: ${{ steps.build-image.outputs.image }}
