@@ -83,19 +83,49 @@ docker-compose down
 
 ![infra](infrastructure/ecs_infra.png)
 
-On AWS I have 1 VPC with 3 differents ECS Cluster
+AWS hosts 3 VPC
 - Production
 - Staging
 - Development
 
-Each Cluster has its own subnet for IP traffic segmentation, this also allows us to implement network ACLs to improve app security. The infrastructure includes the creation of public and private subnets.
+Each VPC hosts differents ECS Cluster to isolate environments. The infrastructure includes the creation of public and private subnets. Load Balancers are located in Public Subnet, API (ECS Cluster) and Databases are located in Private Subnet. As ECS Cluster needs to reach internet, NAT Gateways are deployed in Public Subnet. A Bastion Host is located in each public subnet to access to ECS instances.
 
-About databases, production environment uses Aurora Postgres because It is scalable, easy to operate automating administrative tasks like backups and patching, and it has Multi-AZ redundancy that permit us to improve platform availability. Staging environment is similar to Production with less resources, It uses Aurora Postgres to has similar Production services. Development environment uses RDS Postgresql because Multi-AZ redundancy is not needed. 
+About databases, It uses Aurora Postgres because It is scalable, easy to operate automating administrative tasks like backups and patching, and it has Multi-AZ redundancy that permit us to improve platform availability. Production environment has more resources than Staging and Development.
 
 All environments have an Application Load Balancer as ingress, Production has an Autoscaling Group with 4 instances as desired state (scale to 8 to duplicate its processing), Staging has 2 instances (Scaling to 4) and Development 1 instance.
 
-Infrastructure uses Route53 alias to route to Application Load Balancer endpoint.
 
+
+#### Terraform Configuration
+```
+infrastructure/<environment>/
+ |--> ecr.tf            --> Container Registry
+ |--> ecs.tf            --> ECS Cluster and Task Definition
+ |--> iam.tf            --> Role Permissions
+ |--> lb-asg.tf         --> Load Balancer, Auto Scaling Group, Launch Configuration
+ |--> network.tf        --> VPC, Internet Gateway, NAT Gateway, Elastic IPs, Subnet, Route Tables, Bastion Host
+ |--> outputs.tf        --> Terraform Outputs: Registry URL, Bastion Host IP, Load Balancer DNS
+ |--> providers.tf      --> Terraform Provider
+ |--> rds.tf            --> Database
+ |--> variables.tf      --> Terraform variables
+ |--> terraform.tfvars  --> Each environment has an example of tfvars with all available variables
+```
+
+
+##### Applying TF configurations
+
+- Configure AWS credentials
+```bash
+aws configure
+```
+
+- Edit tfvars files with apropriate configuration (default configuration coult be used to test)
+
+- Apply configuration
+```bash
+cd infrastructure/environment
+terraform apply
+```
 
 
 ### CI
