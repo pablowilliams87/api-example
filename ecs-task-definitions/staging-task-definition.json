@@ -1,0 +1,43 @@
+{
+  "containerDefinitions": [
+    {
+      "portMappings": [
+        {
+          "hostPort": 0,
+          "containerPort": 5000
+        }
+      ],
+      "command": null,
+      "cpu": 512,
+      "environment": [
+        {
+          "name": "FLASK_ENV",
+          "value": "development"
+        },
+		{
+          "name": "DB_URI",
+          "value": "postgresql://postgres:P0stgr3s@staging-rds.chh2zymvqlel.us-east-1.rds.amazonaws.com:5432/environment_airq_measurand"
+        },
+		{
+          "name": "URL_MEASUREMENTS",
+          "value": "https://gist.githubusercontent.com/jvillarf/040c91397d779d4da02fff54708ca935/raw/f1dbbcbfbc4e3daace7d907a3cc5b716ef808014/environment_airq_measurand.csv"
+        }
+      ],
+      "mountPoints": [],
+      "secrets": null,
+      "memory": 512,
+      "memoryReservation": null,
+      "volumesFrom": [],
+      "name": "measurement-app-dev"
+    }
+  ],
+  "placementConstraints": [],
+  "memory": null,
+  "compatibilities": [
+    "EC2"
+  ],
+  "family": "development-measurement-app",
+  "networkMode": null,
+  "cpu": null,
+  "volumes": []
+}
