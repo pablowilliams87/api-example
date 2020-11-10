@@ -119,7 +119,7 @@ infrastructure/<environment>/
 aws configure
 ```
 
-- Edit tfvars files with apropriate configuration (default configuration coult be used to test)
+- Edit tfvars files with apropriate configuration (default configuration could be used to test)
 
 - Apply configuration
 ```bash
