@@ -1,7 +1,7 @@
-name: Deploy on Development Environment
+name: Deploy on Staging Environment
 
 on: 
-  pull_request:
+  push:
     branches: [ staging ]
   
 jobs:

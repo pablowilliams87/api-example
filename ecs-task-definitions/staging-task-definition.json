@@ -16,7 +16,7 @@
         },
 		{
           "name": "DB_URI",
-          "value": "postgresql://postgres:P0stgr3s@staging-rds.chh2zymvqlel.us-east-1.rds.amazonaws.com:5432/environment_airq_measurand"
+          "value": "postgresql://postgres:P0stgr3s@staging-rds.ckydso9n1az9.us-east-1.rds.amazonaws.com:5432/environment_airq_measurand"
         },
 		{
           "name": "URL_MEASUREMENTS",
@@ -28,7 +28,7 @@
       "memory": 512,
       "memoryReservation": null,
       "volumesFrom": [],
-      "name": "measurement-app-dev"
+      "name": "measurement-app-staging"
     }
   ],
   "placementConstraints": [],
@@ -36,7 +36,7 @@
   "compatibilities": [
     "EC2"
   ],
-  "family": "development-measurement-app",
+  "family": "staging-measurement-app",
   "networkMode": null,
   "cpu": null,
   "volumes": []
