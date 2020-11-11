@@ -1,7 +1,7 @@
 name: Deploy on Development Environment
 
 on: 
-  pull_request:
+  push:
     branches: [ main ]
   
 jobs:
