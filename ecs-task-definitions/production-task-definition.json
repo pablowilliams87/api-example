@@ -16,7 +16,7 @@
         },
 		{
           "name": "DB_URI",
-          "value": ${{ secrets.PRODUCTION_DB_URI }}
+          "value": "${{ secrets.PRODUCTION_DB_URI }}"
         },
 		{
           "name": "URL_MEASUREMENTS",
