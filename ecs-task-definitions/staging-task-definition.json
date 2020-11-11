@@ -28,7 +28,7 @@
       "memory": 512,
       "memoryReservation": null,
       "volumesFrom": [],
-      "name": "measurement-app-dev"
+      "name": "measurement-app-staging"
     }
   ],
   "placementConstraints": [],
@@ -36,7 +36,7 @@
   "compatibilities": [
     "EC2"
   ],
-  "family": "development-measurement-app",
+  "family": "staging-measurement-app",
   "networkMode": null,
   "cpu": null,
   "volumes": []
