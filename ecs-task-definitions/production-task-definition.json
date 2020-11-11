@@ -16,7 +16,7 @@
         },
 		{
           "name": "DB_URI",
-          "value": "postgresql://postgres:P0stgr3s@production-api-231499094.us-east-1.elb.amazonaws.com:5432/environment_airq_measurand"
+          "value": "postgresql://postgres:P0stgr3s@production-rds.ckydso9n1az9.us-east-1.rds.amazonaws.com:5432/environment_airq_measurand"
         },
 		{
           "name": "URL_MEASUREMENTS",
