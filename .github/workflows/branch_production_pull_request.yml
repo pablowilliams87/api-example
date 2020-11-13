@@ -1,7 +1,7 @@
 name: Deploy on Production Environment
 
 on: 
-  pull_request:
+  push:
     branches: [ main ]
   
 jobs:
@@ -33,11 +33,15 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
           
+      - name: Download task definition
+        run: |
+          aws ecs describe-task-definition --task-definition production-measurement-app --query taskDefinition > task-definition.json
+      
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: infrastructure/ecs-task-definitions/production-task-definition.json
+          task-definition: task-definition.json
           container-name: production-measurement-app
           image: ${{ steps.build-image.outputs.image }}
 
