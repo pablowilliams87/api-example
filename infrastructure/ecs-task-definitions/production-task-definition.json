@@ -1,0 +1,33 @@
+{
+  "containerDefinitions": [
+    {
+      "cpu": 1024,
+      "memory": 1024,
+      "name": "production-measurement-app",
+      "portMappings": [{
+        "containerPort": 5000,
+        "hostPort": 0
+      }],
+      "environment": [
+        {
+          "name": "FLASK_ENV",
+          "value": "production"
+        },
+
+        {
+          "name": "URL_MEASUREMENTS",
+          "value": "https://gist.githubusercontent.com/jvillarf/040c91397d779d4da02fff54708ca935/raw/f1dbbcbfbc4e3daace7d907a3cc5b716ef808014/environment_airq_measurand.csv"
+        }
+      ],
+      "secrets": [{
+        "name":"DB_URI",
+        "valueFrom": "arn:aws:ssm:us-east-1:286894466481:parameter/production/db_uri"
+      }]
+    }
+  ],
+  "compatibilities": [
+    "EC2"
+  ],
+  "family": "production-measurement-app",
+  "executionRoleArn": "arn:aws:iam::286894466481:role/production-ecs-task"
+}

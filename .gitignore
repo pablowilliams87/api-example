@@ -9,4 +9,4 @@
 *.tfstate.*
 
 # .tfvars files
-*.tfvars
+# *.tfvars

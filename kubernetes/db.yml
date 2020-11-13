@@ -4,28 +4,21 @@ metadata:
   name: postgres-nfs-pv
 spec:
   capacity:
-    storage: 10Gi
+    storage: 4Gi
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  nfs:
-    server: <NFSServer>
+  hostPath:
     path:  /datafiles/database/postgres
 ---
 apiVersion: v1
-kind: Service
+kind: Secret
 metadata:
-  name: postgres-svc
-  labels:
-    app: postgres
-spec:
-  selector:
-    app: postgres
-  type: clusterIP
-  ports:
-  - name: postgres
-    port: 5432
-    targetPort: 5432
+  name: postgres-secret
+type: Opaque
+data:
+  POSTGRES_USER: cG9zdGdyZXM=
+  POSTGRES_PASSWORD: UDBzdGdyM3M=
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -50,7 +43,18 @@ spec:
           name: postgres
         volumeMounts:
         - name: postgres-data
-          mountPath: /var/lib/postgresql/data/pgdata
+          mountPath: /var/lib/postgresql/data/
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_PASSWORD
   volumeClaimTemplates:
   - metadata:
       name: postgres-data
@@ -58,4 +62,19 @@ spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
-          storage: 10Gi
+          storage: 4Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-svc
+  labels:
+    app: postgres
+spec:
+  selector:
+    app: postgres
+  type: ClusterIP
+  ports:
+  - name: postgres
+    port: 5432
+    targetPort: 5432
