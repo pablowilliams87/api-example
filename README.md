@@ -25,7 +25,7 @@ tools/
 cd tools
 ./build_docker_image.sh <TAG>
 
-Example: ./build_docker_image.sh measurement-app:1.1
+Example: ./build_docker_image.sh measurement-app:1.2
 ```
 
 #### Run Docker Image
@@ -49,7 +49,7 @@ docker run --name postgres-test -p 5432:5432 -e POSTGRES_PASSWORD=P0stgr3s -v /d
 ```
 
 #### Load Measurement data on DB
-To create and Load DB
+Create and load DB. It takes csv file from URL_MEASUREMENTS envvar (Default Value: https://gist.githubusercontent.com/jvillarf/040c91397d779d4da02fff54708ca935/raw/f1dbbcbfbc4e3daace7d907a3cc5b716ef808014/environment_airq_measurand.csv)
 ```bash
 docker exec -ti measurement-app flask initdb
 ```
@@ -59,11 +59,17 @@ docker exec -ti measurement-app flask initdb
 curl http://localhost:5000/air_quality
 ```
 
+#### Push Docker Image
+An example image was uploaded to Docker Hub using the following commands
+```bash
+docker tag measurement-app:1.2 pablowilliams87/measurement-app:1.2
+docker push pablowilliams87/measurement-app:1.2
+```
 
 ### Docker Compose
 
 #### Deploy Compose
-docker-compose definition includes the following servides
+docker-compose definition includes the following services
 - api: Docker container built with app/ code
 - postgres: Postgresql DB with persistent data on /datafiles/database/postgresql
 
@@ -180,7 +186,7 @@ This project has the following pipelines
 
 ## Deployment
 ### DB
-Creates a Kubernetes StatefulSet with 1 postgres's replica, creates a PersistentVolume to persist Database, and expose Postgres internally to Kubernetes Cluster using ClusterIP services. Using this services API reaches DB through the endpoint `postgres-svc.default.svc.cluster.local`
+Creates a Kubernetes StatefulSet with 1 postgres's replica, creates a PersistentVolume to persist Database, and expose Postgres internally to Kubernetes Cluster using ClusterIP services. Through this services, API reaches DB via `postgres-svc.default.svc.cluster.local` endpoint
 ```bash
 kubectl apply -f kubernetes/db.yml
 ```

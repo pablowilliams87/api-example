@@ -53,9 +53,12 @@ def get_measurements():
   # Return air quality measurements
   return {"air_quality_measurements": results}
 
+
+# Path used by AWS Load Balancer to Health Check
 @app.route('/status')
 def get_status():
   return ''
+
 
 if __name__ == '__main__':
   app.run(debug=True, host='0.0.0.0')

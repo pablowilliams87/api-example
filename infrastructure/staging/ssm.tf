@@ -1,6 +1,6 @@
 resource "random_string" "db_pass" {
   length  = 12
-  special = true
+  special = false
 }
 
 resource "aws_ssm_parameter" "db_uri" {
